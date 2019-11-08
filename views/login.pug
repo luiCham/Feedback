@@ -1,0 +1,56 @@
+doctype html
+html
+  head
+    title= `${title}`
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/styles.css')
+    
+
+  body
+    div.container.login-con
+      h3 Welcome! Please, login and give us your feedback!
+      
+      -data = data || {}
+
+      if error
+        ul.my-error
+          li=error
+
+      if errors
+        ul.my-errors
+          for error in errors
+            li= error.msg
+
+      form(action="." method="POST" class="form-login")
+        label(for="EmailLabel") Email:
+        input(
+          type="Email"
+          id="email"
+          name="email"
+          class="form-control"
+          value=data.name
+        )
+
+        label(for="passwordLabel") Password:
+        input(
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          value=data.email
+        )
+
+        input(
+          type="submit"
+          value="Login"
+          class="btn btn-lg btn-primary btn-block"
+        )
+
+      form(action="./register" method="route" class="form-logToReg")
+        div.container.logToReg
+          label(for="logToRegLabel", name="logToRegLabel", id="logToRegLabel") If you don't have an account, 
+          input( 
+            type="submit"
+            value=" register"
+            class="btn"
+          )

@@ -1,0 +1,93 @@
+doctype html
+html
+    head
+        title= `${title}`
+        link(rel='stylesheet', href='/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/css/styles.css')
+
+        
+
+    body
+        div.container.registration-con
+
+            h3 Please fill your info and hit the register button, then login
+            
+            -data = data || {}
+
+            if error
+                ul.my-error
+                    li=error
+
+            if errors
+                ul.my-errors
+                    for error in errors
+                        li= error.msg
+            else
+                infoLabel(for="infoLabel" name="infoLabel" id="infoLabel" type="infoLabel") *All the information is neccessary to register
+
+            form(action="/register" method="POST" class="form-register")
+                div.container.first_row
+                    label(for="name" type="inLabel") Name:
+                    input(
+                        name="name"
+                        id="name"
+                        type="input"
+                        class="form-control"  
+                    )
+                    label(for="email", type="inLabel") Email:
+                    input(
+                        name="email"
+                        id="email"
+                        type="input"
+                        class="form-control" 
+                    )
+                div.container.second_row
+                    label(for="password", type="inLabel") Password:
+                    input(
+                        name="password"
+                        id="password"
+                        type="input"
+                        class="form-control" 
+                    )
+                    label(for="age", type="inLabel") Age:
+                    input(
+                        name="age"
+                        id="age"
+                        type="input"
+                        class="form-control" 
+                    )
+                div.container.third_row
+                    label(for="cardNumberLabel", type="inLabel") Credit card number:
+                    input(
+                        name="cardNumber"
+                        id="cardNumber"
+                        type="input"
+                        class="form-control" 
+                    )
+                    label(for="cardPasswordLabel", type="inLabel") Credit card password:
+                    input(
+                        name="cardPassword"
+                        id="cardPassword"
+                        type="input"
+                        class="form-control" 
+                    )
+                div.container.fourth_row
+                    label(for="cardExpLabel", type="inLabel") Credit card Exp:
+                    input(
+                        name="cardExp"
+                        id="cardExp"
+                        type="input"
+                        class="form-control" 
+                    )
+                    label(for="cardSecNumber", type="inLabel") Credit card secutiry number:
+                    input(
+                        name="cardSecNumber"
+                        id="cardSecNumber"
+                        type="input"
+                        class="form-control" 
+                    )
+                input(
+                    type="submit"
+                    value="Submit"
+                    class="btn btn-lg btn-primary btn-block"
+                )
