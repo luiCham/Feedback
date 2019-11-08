@@ -21,7 +21,7 @@ html
           for error in errors
             li= error.msg
 
-      form(action="." method="POST" class="form-login")
+      form(action="/login" method="POST" class="form-login")
         label(for="EmailLabel") Email:
         input(
           type="Email"

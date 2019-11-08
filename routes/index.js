@@ -12,10 +12,14 @@ const basic = auth.basic({
 });
 
 router.get('/', (req,res)=>{
+  res.redirect('/login');
+});
+
+router.get('/login', (req,res)=>{
   res.render('login', {title:"Login"});
 });
 
-router.post('/',
+router.post('/login',
   [
     body('email')
         .isEmail()
@@ -39,7 +43,7 @@ router.post('/',
           });
         } else {
           console.log('ISMATCH IS: ' + isMatch)
-          res.send('logged in!');
+          res.redirect('/productsfeedback');
         }
       })
     } else {
@@ -90,7 +94,7 @@ router.post('/register',
       registration.save()
         .then(()=>{
           console.log('Registered successfully!');
-          res.redirect('/');
+          res.redirect('/productsfeedback');
         })
         .catch(()=>{
           console.log('Registration failed - database error');
@@ -101,5 +105,9 @@ router.post('/register',
     }
   }
 );
+
+router.get('/productsfeedback', (req,res)=>{
+  res.render('productsfeedback.pug');
+});
 
 module.exports=router;
