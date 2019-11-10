@@ -1,8 +1,11 @@
 require('../models/Registration')
-const path=require('path');
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const { body, validationResult } = require('express-validator');
+const { unlink } = require('fs-extra');
+
+const Image = require('../models/Image');
 
 const router = express.Router();
 const credentials = mongoose.model('Credentials');
@@ -43,7 +46,7 @@ router.post('/login',
           });
         } else {
           console.log('ISMATCH IS: ' + isMatch)
-          res.redirect('/productsfeedback');
+          res.redirect('/products');
         }
       })
     } else {
@@ -106,8 +109,43 @@ router.post('/register',
   }
 );
 
-router.get('/productsfeedback', (req,res)=>{
-  res.render('productsfeedback.pug');
+router.get('/products', async (req,res) => {
+  const images = await Image.find();
+  console.log(images);
+  res.render('index.ejs', { images });
+});
+
+router.post('/upload', async (req, res) => {
+  const image = new Image();
+  image.title = req.body.title;
+  image.description = req.body.description;
+  image.filename = req.file.filename;
+  image.path = '/img/uploads/' + req.file.filename;
+  image.originalname = req.file.originalname;
+  image.mimetype = req.file.mimetype;
+  image.size = req.file.size;
+
+  await image.save();
+
+  res.redirect('/products');
+});
+
+router.get('/upload', (req, res) => {
+  res.render('upload.ejs');
+});
+
+router.get('/image/:id', async (req, res) => {
+  const { id } = req.params;
+  const image = await Image.findById(id);
+  console.log(image);
+  res.render('profile.ejs', { image });
+});
+
+router.get('/image/:id/delete', async (req, res) => {
+  const { id } = req.params;
+  const image = await Image.findByIdAndDelete(id);
+  await unlink(path.resolve('./public/' + image.path));
+  res.redirect('/products');
 });
 
 module.exports=router;
