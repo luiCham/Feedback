@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nueva Reseña</title>
+    <%- include("partials/head") %>
+</head>
+<body>
+    <%- include("partials/navigation") %>
+    <div class="container p-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card animated fadeInDown">
+                        <img src="<%= image.path %>" class="card-img-top">
+                            <div class ="card-body">
+                                <h5 class="card-title"><%= image.title %></h5>
+                                <p class="card-text"><%= image.price %></p>
+                                <p class="card-text"><%= image.description %></p>
+                                <p class="card-text"><%= image.category %></p>
+                                <p class="card-text"><%= format(image.created_at) %></p>
+                            </div>
+                    </div>
+                    <div class ="card-columns">
+                        <% feedbacks.forEach(function(feedbacks) { %>
+                            <div class="card animated fadeInDown">
+                                <div src="<%= feedbacks.path %>" class="card-img-top">
+                                    <div class ="card-body">
+                                        <p class="card-text"><%= feedbacks.comment %></p>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+</html>

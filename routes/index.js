@@ -185,4 +185,16 @@ router.post('/feedbacking',
     }
 });
 
+router.get('/image/:id/feedback', async (req, res) => {
+  if(sess.user){
+    const feedbacks = await feedback.find();
+    const { id } = req.params;
+    const image = await Image.findById(id);
+    console.log(feedbacks, image);
+    res.render('reviews.ejs', { image, feedbacks });
+  } else {
+    res.redirect('/login');
+  }
+});
+
 module.exports=router;
