@@ -11,7 +11,7 @@
     <%- include("partials/navigation") %>
     <div class="container p-4">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-5 offset -md-4">
                     <div class="card animated fadeInDown">
                         <img src="<%= image.path %>" class="card-img-top">
                             <div class ="card-body">
@@ -23,13 +23,15 @@
                             </div>
                     </div>
                 </div>
-                <div class="col-md-4 offset -md-4">
+                <div class="col-md-7 offset -md-4">
                         <div class ="card-text">
                             <% feedbacks.forEach(function(feedbacks) { %>
                                 <div class="card animated fadeInDown">
                                     <div src="<%= feedbacks.path %>" class="card-img-top">
                                         <div class ="card-body">
                                             <p class="card-text"><%= feedbacks.comment %></p>
+                                        </div>
+                                    </div>
                                 </div>
                             <% }) %>
                         </div>
