@@ -37,4 +37,4 @@ const credentialsSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Credentials', credentialsSchema);
+module.exports = mongoose.model('credentials', credentialsSchema);

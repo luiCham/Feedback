@@ -127,6 +127,15 @@
     padding: 0;
   }
 
+  .feedback-con{
+    background-color: gold;
+  }
+  .feedback-con input{
+    width: 70px;
+    background-color: red;
+    color:red;
+  }
+
   /* productsfeedback styles */
   .headTitles-con h3 {
     color: blue;

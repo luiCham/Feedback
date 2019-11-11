@@ -1,0 +1,21 @@
+doctype html
+head
+    title= `${title}`
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/styles.css')
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+
+container#feedback-con.container.p-4(name='feedback-con')
+  form.form(action='/feedbacking', method='POST')
+    .row
+      .col-md-4.offset-md-4
+        .card.animated.fadeInDown
+          img.card-img-top
+          .card-body
+            h5.card-title
+            p.card-text
+            p.card-text
+            p.card-text
+            p.card-text
