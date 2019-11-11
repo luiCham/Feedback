@@ -22,7 +22,6 @@ router.get('/', (req,res)=>{
 });
 
 router.get('/login', (req,res)=>{
-  sess=req.session;
   res.render('login', {title:"Login"});
 });
 
@@ -38,8 +37,6 @@ router.post('/login',
   (req, res) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
-      sess=req.session;
-      sess.user=body('email');
       credentials.findOne(req.body, function(err, isMatch) {
         if(isMatch==null) {
           console.log('Wrong login: ');
@@ -65,11 +62,7 @@ router.post('/login',
 );
 
 router.get('/register', (req, res) => {
-  if(sess.user){
-    res.redirect('/products');
-  }else{
     res.render('register', { title: 'registration' });
-  }
 });
 
 router.post('/register', 
@@ -119,13 +112,9 @@ router.post('/register',
 );
 
 router.get('/products', async (req,res) => {
-  if(sess.user){
     const images = await Image.find();
     console.log(images);
     res.render('index.ejs', { images });
-  }else{
-    res.redirect('/login');
-  }  
 });
 
 router.post('/upload', async (req, res) => {
@@ -146,20 +135,14 @@ router.post('/upload', async (req, res) => {
 });
 
 router.get('/upload', (req, res) => {
-  if(sess.user){
     res.render('upload.ejs');
-  }else{
-    res.redirect('/login');
-  }
 });
 
 router.get('/image/:id', async (req, res) => {
-  if(sess.user){
     const { id } = req.params;
     const image = await Image.findById(id);
     console.log(image);
     res.render('profile.ejs', { image });
-  }  
 });
 
 router.get('/image/:id/delete', async (req, res) => {
@@ -186,15 +169,11 @@ router.post('/feedbacking',
 });
 
 router.get('/image/:id/feedback', async (req, res) => {
-  if(sess.user){
     const feedbacks = await feedback.find();
     const { id } = req.params;
     const image = await Image.findById(id);
     console.log(feedbacks, image);
     res.render('reviews.ejs', { image, feedbacks });
-  } else {
-    res.redirect('/login');
-  }
 });
 
 module.exports=router;
