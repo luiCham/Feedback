@@ -1,8 +1,11 @@
 require('../models/Registration')
 require('../models/feedback')
+require('../models/comment');
+
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const md5 = require('md5');
 const { body, validationResult } = require('express-validator');
 const { unlink } = require('fs-extra');
 const Image = require('../models/Image');
@@ -10,6 +13,8 @@ const Image = require('../models/Image');
 const router = express.Router();
 const credentials = mongoose.model('credentials');
 const feedback = mongoose.model('feedback');
+const Comment = mongoose.model('Comment');
+
 const auth=require('http-auth');
 const basic = auth.basic({
   file: path.join(__dirname, '../users.htpasswd'),
@@ -152,28 +157,23 @@ router.get('/image/:id/delete', async (req, res) => {
   res.redirect('/products');
 });
 
-router.post('/feedbacking',
-[
-  body('productTitle').isLength({min:1}).withMessage("Please select a product"),
-  body('comment').isLength({min:1, max:150}).withMessage("Error on feedback")
-],
-(req,res)=>{
-  var errors=validationResult(req);
-    if(errors.isEmpty()){
-      var feedback1=new feedback(req.body);
-      feedback1.save();
-      res.redirect('/products');
-    }else{
-      res.send(errors);
-    }
+router.post('/image/:id/feedback', async (req,res) => {
+  const imgID = req.body.imageID;
+  if (imgID) {
+    const newComment = new Comment(req.body);
+    newComment.gravatar = md5(newComment.email);
+    newComment.image_id = imgID;
+    await newComment.save();
+    res.redirect('/products');
+  }
 });
 
-router.get('/image/:id/feedback', async (req, res) => {
-    const feedbacks = await feedback.find();
-    const { id } = req.params;
-    const image = await Image.findById(id);
-    console.log(feedbacks, image);
-    res.render('reviews.ejs', { image, feedbacks });
+router.get('/image/:id/feedback', async (req, res) => {   
+  const { id } = req.params;
+  const image = await Image.findById(id);
+  const comments = await Comment.find({image_id: id});
+  
+  res.render('reviews.ejs', { image, comments });
 });
 
 module.exports=router;

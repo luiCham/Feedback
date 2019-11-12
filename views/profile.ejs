@@ -9,26 +9,48 @@
 </head>
 <body>
     <%- include("partials/navigation") %>
+    
     <container id="feedback-con" name="feedback-con">
-        <form action="/feedbacking" method="POST" class="form">
+        <form action="/image/<%= image._id %>/feedback" method="POST" class="form">
             <div class="row">
                 <div class="col-md-4 offset-md-4">
                     <div class="card animated fadeInDown">
-                        <img src="<%= image.path %>" class="card-img-top">
                             <div class ="card-body">
+                                <img src="<%= image.path %>" class="card-img-top">
                                 <h5 class="card-title"><%= image.title %></h5>
+                                <textarea name="imageID" style="display:none;"><%= image.id %></textarea>
                                 <p class="card-text"><%= image.price %></p>
                                 <p class="card-text"><%= image.description %></p>
                                 <p class="card-text"><%= image.category %></p>
                                 <p class="card-text"><%= format(image.created_at) %></p>
-                                <input type="text" name="productTitle" id="productTitle" value="<%= image.title %>" hidden>
-                                <input type="text" name="comment" id="comment" class="form-control"></input>
-                                <input type="submit" value="Upload" class="btn btn-lg btn-primary btn-block"></input>
-                            </div>
+
+                                <form action="/image/<%= image._id %>/feedback" method="POST">
+                                    
+                                    <div class="form-group">
+                                        <textarea name="name" class="form-control" placeholder="Nombre"></textarea>
+                                    </div>
+
+                                    
+    
+                                    <div class="form-group">
+                                        <textarea name="email" class="form-control" placeholder="Email"></textarea>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <textarea name="comment" class="form-control" placeholder="Reseña de máximo 150 carácteres..."></textarea>
+                                    </div>
+                                    <div class="form-grop">
+                                        <button type="submit" class="btn btn-success btn-block">
+                                            Publicar Reseña
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
+        
     </container>
 </body>
 </html>

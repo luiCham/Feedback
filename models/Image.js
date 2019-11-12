@@ -1,4 +1,6 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+const path = require('path');
 
 const imageSchema = new Schema({
     title: { type: String },
@@ -13,4 +15,10 @@ const imageSchema = new Schema({
     created_at: { type: Date, default: Date.now() }
 });
 
-module.exports = model('Image', imageSchema);
+imageSchema.virtual('uniqueId')
+  .get(function () {
+    return this.filename.replace(path.extname(this.filename), '');
+  });
+
+
+module.exports = mongoose.model('Image', imageSchema);
