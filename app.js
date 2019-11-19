@@ -19,10 +19,8 @@ app.use(cookieParser());
 app.use(session({
     secret: 'ssshhhhh',
     saveUninitialized: false,
-    resave: false
+    resave: true
 }));
-
-
 
 //app.use('/', routes);
 //app.use(express.static('public'));

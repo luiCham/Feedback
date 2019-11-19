@@ -21,13 +21,17 @@ const basic = auth.basic({
 });
 
 
-var sess;
 router.get('/', (req,res)=>{
   res.redirect('/login');
 });
 
 router.get('/login', (req,res)=>{
-  res.render('login', {title:"Login"});
+  if(req.session.loggedIn){
+    res.redirect('/products');
+  }else{
+    res.render('login', {title:"Login"});
+  }
+  
 });
 
 router.post('/login',
@@ -52,7 +56,10 @@ router.post('/login',
             data: req.body,
           });
         } else {
-          console.log('ISMATCH IS: ' + isMatch)
+          req.session.loggedIn=true;
+          req.session.name=isMatch.name;
+          req.session.email=isMatch.email;
+          console.log("user: "+req.session.name);
           res.redirect('/products');
         }
       })
@@ -117,9 +124,14 @@ router.post('/register',
 );
 
 router.get('/products', async (req,res) => {
+  if(req.session.loggedIn){
     const images = await Image.find();
-    console.log(images);
-    res.render('index.ejs', { images });
+    console.log("Welcome, "+req.session.name);
+    res.render('index.ejs', { images, name:req.session.name });
+  }else{
+    res.redirect('/login');
+  }
+    
 });
 
 router.post('/upload', async (req, res) => {
@@ -140,14 +152,22 @@ router.post('/upload', async (req, res) => {
 });
 
 router.get('/upload', (req, res) => {
-    res.render('upload.ejs');
+  if(req.session.loggedIn){
+    res.render('upload.ejs', {name:req.session.name});
+  }else{
+    res.redirect('/login');
+  }    
 });
 
 router.get('/image/:id', async (req, res) => {
+  if(req.session.loggedIn){
     const { id } = req.params;
     const image = await Image.findById(id);
     console.log(image);
-    res.render('profile.ejs', { image });
+    res.render('profile.ejs', { image, name:req.session.name , email:req.session.email},);
+  }else{
+    res.redirect('/login');
+  }    
 });
 
 router.get('/image/:id/delete', async (req, res) => {
@@ -168,12 +188,25 @@ router.post('/image/:id/feedback', async (req,res) => {
   }
 });
 
-router.get('/image/:id/feedback', async (req, res) => {   
-  const { id } = req.params;
-  const image = await Image.findById(id);
-  const comments = await Comment.find({image_id: id});
-  
-  res.render('reviews.ejs', { image, comments });
+router.get('/image/:id/feedback', async (req, res) => {
+  if(req.session.loggedIn){
+    const { id } = req.params;
+    const image = await Image.findById(id);
+    const comments = await Comment.find({image_id: id});
+    res.render('reviews.ejs', { image, comments, name:req.session.name });
+  }else{
+    res.redirect('login');
+  }
 });
+
+router.get('/logout', (req,res)=>{
+  if(req.session.loggedIn){
+    console.log("Session destroyed: "+req.session.username);
+    req.session.destroy();
+    res.redirect('/login');
+  }else{
+    res.redirect('/login');
+  }
+})
 
 module.exports=router;
