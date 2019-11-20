@@ -91,18 +91,12 @@ router.post('/register',
   body('age')
     .isLength({ min: 1 })
     .withMessage('missing age'),
-  body('cardNumber')
+  body('address')
     .isLength({ min: 1 })
-    .withMessage('missing card number'),
-  body('cardPassword')
+    .withMessage('missing address'),
+  body('city')
     .isLength({ min: 1 })
-    .withMessage('missing card password'),
-  body('cardExp')
-    .isLength({ min: 1 })
-    .withMessage('missing card expiration'),
-  body('cardSecNumber')
-    .isLength({ min: 1 })
-    .withMessage('missing card security number')
+    .withMessage('missing city')
 ],
 (req, res) =>{
   const errors = validationResult(req);
@@ -111,7 +105,7 @@ router.post('/register',
       registration.save()
         .then(()=>{
           console.log('Registered successfully!');
-          res.redirect('/productsfeedback');
+          res.redirect('/products');
         })
         .catch(()=>{
           console.log('Registration failed - database error');

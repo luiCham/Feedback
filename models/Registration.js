@@ -19,20 +19,12 @@ const credentialsSchema = new mongoose.Schema({
     type: Number,
     trim: true
   },
-  cardNumber: {
-    type: Number,
-    trim: true
+  address: {
+    type: String,
+    trim: false
   },
-  cardPassword: {
-    type: Number,
-    trim: true
-  },
-  cardExp: {
-    type: Number,
-    trim: true
-  },
-  cardSecNumber: {
-    type: Number,
+  city: {
+    type: String,
     trim: true
   }
 });
